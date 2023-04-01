@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http auto-config="true" use-expressions="true">
+<!--     **   all urls having maker-->
+        <security:intercept-url pattern="/maker/**" access="hasRole('MAKER')"/>
+            <security:intercept-url pattern="/checker/**" access="hasRole('CHECKER')"/>
+        <security:intercept-url pattern="/**" access="isAuthenticated()"/>
+        <security:intercept-url pattern="/**" access=""/>
+        <security:form-login default-target-url="/"/>
+<!--        <security:intercept-url pattern="/" access="permitAll"/>-->
+        <security:form-login/>
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="maker" password="{noop}pass" authorities="ROLE_MAKER"/>
+                <security:user name="checker" password="{noop}pass" authorities="ROLE_CHECKER"/>
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
+</beans>
